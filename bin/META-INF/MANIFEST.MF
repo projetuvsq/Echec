@@ -1,0 +1,8 @@
+Main-Class: Chess
+
+Name: lib/src/echec/
+Sealed: false
+
+Name: lib/src/pieces/
+Sealed: false
+
