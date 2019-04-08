@@ -2,7 +2,7 @@ import lib.src.echec.*;
 import lib.src.pieces.*;
 import java.awt.Color;
 
-
+ 
 // Mainclass du projet
 public class Chess
 {

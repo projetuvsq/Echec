@@ -1,5 +1,5 @@
 package lib.src.echec;
-/**
+/** 
  * Cette classe représente les cases contenu et leurs méthodes.
  *
  * @author Serhan Wissam
