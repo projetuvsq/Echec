@@ -23,17 +23,34 @@ public class Pion extends Piece {
 	@Override
 	public boolean estValide(Case c_initial, Case c_final)
 	{
-		// deplacement normal
-		if( (c_final.getX() == c_initial.getX() && ( c_final.getY() == c_initial.getY()+1 
-				|| (c_final.getY() == c_initial.getY()+2 && this.initial) ) ) )
-		{
-			return true;
-		} // mange un pion
-		else if( (c_final.getX() == c_initial.getX()+1 || c_final.getX() == c_initial.getX()-1) 
-				&& c_final.getY() == c_initial.getY()+1 && (c_final.retourneContenu().getColor() != this.couleur && !(c_final.estVide() ) ) )
-		{
-			return true;
+		if (this.couleur == Color.white) {
+			// deplacement normal
+			if( (c_final.getX() == c_initial.getX() && ( c_final.getY() == c_initial.getY()+1 
+					|| (c_final.getY() == c_initial.getY()+2 && this.initial) ) ) )
+			{
+				return true;
+			} // mange un pion
+			else if( (c_final.getX() == c_initial.getX()+1 || c_final.getX() == c_initial.getX()-1) 
+					&& c_final.getY() == c_initial.getY()+1 && (c_final.retourneContenu().getColor() != this.couleur && !(c_final.estVide() ) ) )
+			{
+				return true;
+			}
+			else return false;
 		}
-		else return false;
+		else
+		{
+			// deplacement normal
+			if( (c_final.getX() == c_initial.getX() && ( c_final.getY() == c_initial.getY()-1 
+				|| (c_final.getY() == c_initial.getY()-2 && this.initial) ) ) )
+			{
+				return true;
+			} // mange un pion
+			else if( (c_final.getX() == c_initial.getX()+1 || c_final.getX() == c_initial.getX()-1) 
+					&& c_final.getY() == c_initial.getY()-1 && (c_final.retourneContenu().getColor() != this.couleur && !(c_final.estVide() ) ) )
+			{
+				return true;
+			}
+			else return false;
+		}
 	}
 }
