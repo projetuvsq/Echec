@@ -9,7 +9,7 @@ public class Fou extends Piece {
 	public Fou(Color couleur) {
 		super (couleur, "fou");
 	}
-	
+	 
 	@Override
 	public boolean estValide(Case c_initial, Case c_final) {
 		if (Math.abs (c_final.getX() - c_initial.getX()) == Math.abs (c_final.getY() - c_initial.getY()))

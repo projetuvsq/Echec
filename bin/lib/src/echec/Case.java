@@ -1,10 +1,5 @@
 package lib.src.echec;
-/** 
- * Cette classe représente les cases contenu et leurs méthodes.
- *
- * @author Serhan Wissam
- * @version 18/03/2019
- */
+
 public class Case
 {
     // contenu de la case
@@ -58,7 +53,6 @@ public class Case
      */
     public Piece retourneContenu()
     {
-    	if(this.contenu != null) System.out.println("La case contient la pièce" + this.contenu. getName());
     	return this.contenu;
     }
     /**

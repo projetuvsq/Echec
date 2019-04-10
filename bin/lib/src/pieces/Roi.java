@@ -8,7 +8,7 @@ public class Roi extends Piece {
 	public Roi(Color couleur) {
 		super(couleur, "roi");
 	}
-
+ 
 	@Override
 	public boolean estValide(Case c_initial, Case c_final) {
 		

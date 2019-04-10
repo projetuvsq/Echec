@@ -1,10 +1,6 @@
 package lib.src.echec;
-/**
- * Cette classe concerne les joueurs et leurs méthodes
- *
- * @author Serhan Wissam
- * @version Mars 2019
- */
+
+
 public class Joueur
 {
     // mode == 0 ? : IA || mode == 1 ? : Player

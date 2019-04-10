@@ -9,7 +9,7 @@ public class Tour extends Piece {
 	{
 		super(couleur, "tour");
 	}
-	
+	 
 	@Override
 	public boolean estValide (Case c_initial, Case c_final) 
 	{

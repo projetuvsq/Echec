@@ -1,10 +1,12 @@
 package lib.src.echec;
+
+import java.awt.Color;
+import lib.src.pieces.*;
+
 /**
  * Cette classe représente le terrain (et ses méthodes), qui est unique et contient un tableau de type Case, 
  * c'est par lui que tout se fera.
  *
- * @author Serhan Wissam 
- * @version 18/03/2019
  */
 public class Terrain
 {
@@ -17,39 +19,76 @@ public class Terrain
      */
     public Terrain()
     {
+    	int i, j;
         // initialisation des variables d'instance
     	this.terrain = new Case[nb_case][nb_case];
-    	for(int i=0; i<nb_case; i++)
+    	// Initialisation des pions blancs (en bas)
+    	for (i = 0; i<nb_case; i++) {
+    		this .terrain [i][1] = new Case (new Pion(Color.white), i, 1);
+    	}
+    	
+    	this .terrain [0][7] = new Case (new Tour(Color.black), 0, 7);
+    	this .terrain [7][7] = new Case (new Tour(Color.black), 7, 7);
+    	this .terrain [1][7] = new Case (new Cavalier(Color.black), 1, 7);
+    	this .terrain [6][7] = new Case (new Cavalier(Color.black), 6, 7);
+    	this .terrain [2][7] = new Case (new Fou(Color.black), 2, 7);
+    	this .terrain [5][7] = new Case (new Fou(Color.black), 5, 7);
+    	this .terrain [3][7] = new Case (new Roi(Color.black), 3, 7);
+    	this .terrain [4][7] = new Case (new Reine(Color.black), 4, 7);
+    			
+    	// Initialisation des pions noirs
+    	for (i = 0; i<nb_case; i++) {
+    	 	this .terrain [i][6] = new Case (new Pion(Color.black), i, 6);
+       	}
+    	
+    	this .terrain [0][0] = new Case (new Tour(Color.white), 0, 0);
+    	this .terrain [7][0] = new Case (new Tour(Color.white), 7, 0);
+    	this .terrain [1][0] = new Case (new Cavalier(Color.white), 1, 0);
+    	this .terrain [6][0] = new Case (new Cavalier(Color.white), 6, 0);
+    	this .terrain [2][0] = new Case (new Fou(Color.white), 2, 0);
+    	this .terrain [5][0] = new Case (new Fou(Color.white), 5, 0);
+    	this .terrain [3][0] = new Case (new Roi(Color.white), 3, 0);
+    	this .terrain [4][0] = new Case (new Reine(Color.white), 4, 0);
+    	
+    	// Initialisation du reste
+    	for(i=2; i<nb_case-2; i++)
     	{
-    		for(int j=0; j<nb_case; j++)
+    		for(j=0; j<nb_case; j++)
     		{
-    			this.terrain [i] [j] = new Case (i, j);
+    			this.terrain [i][j] = new Case (i, j);
     		}
     	}
     	// ajouter initialisation des pièces
+    	
     }
    
     /**
      * Affiche une interface graphique dans le shell 
      */
     public void afficher() {
-    	for(int i=nb_case-1;i>=0;i--) {
-    		
-    		System.out.print(i);// afficher les chiffres agauche 
-    		
-    		for(int j=0;j<nb_case;j++)
+    	
+    	for (int i=nb_case-1; i>=0; --i) 
+    	{
+    		System.out.print(i);// afficher les chiffres a gauche 
+    		for (int j=0; j<nb_case; ++j)
     		{
-    			if(this.terrain[i][j].retourneContenu()==null) 
+    			if( this .terrain [i][j] .retourneContenu() == null) 
     			{
-    				System.out.printf("|%9s","");	
-    			}else {
-    				System.out.printf("|%9s", this.terrain[i][j].retourneContenu().getName());
+    				System.out.printf ("|%12s","");	
     			}
-    			
+    			else {
+    				if (terrain [i][j] .retourneContenu() .getColor() == Color.white) {
+    					System.out.printf ("|%10s:1", this .terrain[i][j] .retourneContenu() .getName());
+    				}
+    				else {
+    					System.out.printf ("|%10s:2", this .terrain[i][j] .retourneContenu() .getName());
+    				}
+    			}
     		}
-    		System.out.println("|\n");
-    								}
-    System.out.print(" ");
+    		System.out.println ("|\n");
+    	}
+    	
+    	System.out.print(" ");
     	for(int i=0;i<nb_case;i++ )
     	{
     		System.out.print("|    "+(char)('a'+i)+"    "); // afficher les lettres en bas 
@@ -61,7 +100,7 @@ public class Terrain
      * Fonction permettant de tester l'existence d'un obstacle sur le déplacement d'une pièce
      * @param		c_initial	case de départ de la pièce
      * @param		c_final		case d'arrivée de la pièce
-     * @return 		Vrai si il y a un obstacle sur le déplacement de la pièce Faux sinon
+     * @return 					Vrai si il y a un obstacle sur le déplacement de la pièce Faux sinon
      */
    public boolean existeObstacle (Case c_initial, Case c_final)
     {

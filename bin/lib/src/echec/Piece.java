@@ -1,11 +1,7 @@
 package lib.src.echec;
 import java.awt.Color;
-/**
- * Cette classe concerne les pieces du jeu d'échec et leurs méthodes.
- *
- * @author Serhan Wissam
- * @version 18/03/2019
- */
+
+
 public abstract class Piece
 {
     // Couleur des pièces (noire ou blanche)

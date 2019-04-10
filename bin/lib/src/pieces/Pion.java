@@ -14,7 +14,7 @@ public class Pion extends Piece {
 		this.initial = true;
 		
 	}
-	
+	 
 	public boolean getStatus()
 	{
 		return this.initial;
