@@ -51,9 +51,9 @@ public class Terrain
     	this .terrain [4][0] = new Case (new Reine(Color.white), 4, 0);
     	
     	// Initialisation du reste
-    	for(i=2; i<nb_case-2; i++)
+    	for(j=2; j<nb_case-2; j++)
     	{
-    		for(j=0; j<nb_case; j++)
+    		for(i=0; i<nb_case; i++)
     		{
     			this.terrain [i][j] = new Case (i, j);
     		}
@@ -67,21 +67,21 @@ public class Terrain
      */
     public void afficher() {
     	
-    	for (int i=nb_case-1; i>=0; --i) 
+    	for (int j=nb_case; j>0; --j) 
     	{
-    		System.out.print(i);// afficher les chiffres a gauche 
-    		for (int j=0; j<nb_case; ++j)
+    		System.out.print(j);// afficher les chiffres a gauche 
+    		for (int i=0; i<nb_case; ++i)
     		{
-    			if( this .terrain [i][j] .retourneContenu() == null) 
+    			if( this .terrain [i][j-1] .retourneContenu() == null) 
     			{
-    				System.out.printf ("|%12s","");	
+    				System.out.printf ("|%12s","");
     			}
     			else {
-    				if (terrain [i][j] .retourneContenu() .getColor() == Color.white) {
-    					System.out.printf ("|%10s:1", this .terrain[i][j] .retourneContenu() .getName());
+    				if (terrain [i][j-1] .retourneContenu() .getColor() == Color.white) {
+    					System.out.printf ("|%10s:1", this .terrain[i][j-1] .retourneContenu() .getName());
     				}
     				else {
-    					System.out.printf ("|%10s:2", this .terrain[i][j] .retourneContenu() .getName());
+    					System.out.printf ("|%10s:2", this .terrain[i][j-1] .retourneContenu() .getName());
     				}
     			}
     		}
@@ -91,7 +91,7 @@ public class Terrain
     	System.out.print(" ");
     	for(int i=0;i<nb_case;i++ )
     	{
-    		System.out.print("|    "+(char)('a'+i)+"    "); // afficher les lettres en bas 
+    		System.out.print("|     "+(char)('a'+i)+"      "); // afficher les lettres en bas 
     	}
     	System.out.println("|\n");
     }
@@ -105,81 +105,108 @@ public class Terrain
    public boolean existeObstacle (Case c_initial, Case c_final)
     {
 	    int i;
-    	switch (c_initial.retourneContenu().getName())
-    	{
-    		case "pion":
-    			
-    			if ((c_initial.getX()+1 == c_final.getX() || c_final.getX() == c_initial.getX()-1) && c_final.getY() == c_initial.getY()+1)
-    				return false;
-    			
-    			for (i=c_initial.getY()+1; i<c_final.getY()+1; ++i)
+	    String pieceName = c_initial.retourneContenu().getName();
+	    
+	    if (pieceName == "cavalier") {
+	    	return false;
+	    }
+	    
+	    else if (pieceName == "pion") {
+	    	if ((c_initial.getX()+1 == c_final.getX() || c_final.getX() == c_initial.getX()-1) && c_final.getY() == c_initial.getY()+1)
+				return false;
+			
+			for (i=c_initial.getY()+1; i<c_final.getY()+1; ++i)
+			{
+				if(this.terrain [c_initial.getX()][i] .retourneContenu() != null)
+					return true;
+			}
+			return false;
+	    	
+	    }
+	    
+	    else if (pieceName == "tour") {
+	    	// Déplacement vertiacle case finale au-dessus de la case initiale
+   			if(c_initial.getX() == c_final.getX() && c_final.getY() > c_initial.getY())
+			{
+				for(i=c_initial.getY()+1; i<c_final.getY(); ++i)
     			{
-    				if(this.terrain [c_initial.getX()][i] .retourneContenu() != null)
+    				if(this.terrain [c_final.getX()] [i].retourneContenu() != null)
+    				{
     					return true;
-    			}
-    			return false;
-    			
-    		case "tour":
-    			// Déplacement vertiacle case finale au-dessus de la case initiale
-       			if(c_initial.getX() == c_final.getX() && c_final.getY() > c_initial.getY())
+    				}
+    			}	
+			}
+   			// Déplacement verticale case finale en-dessous de la case initiale
+   			else if(c_initial.getX() == c_final.getX() && c_final.getY() < c_initial.getY())
+			{
+				for(i=c_initial.getY()-1; i>c_final.getY(); --i)
     			{
-    				for(i=c_initial.getY()+1; i<c_final.getY(); ++i)
-        			{
-        				if(this.terrain [c_final.getX()] [i].retourneContenu() != null)
-        				{
-        					return true;
-        				}
-        			}	
+    				if(this.terrain [c_final.getX()] [i].retourneContenu() != null)
+    				{
+    					return true;
+    				}
     			}
-       			// Déplacement verticale case finale en-dessous de la case initiale
-       			else if(c_initial.getX() == c_final.getX() && c_final.getY() < c_initial.getY())
+			}
+   			// Déplacement horizontale case finale à droite de la case initiale
+			else if(c_initial.getY() == c_final.getY() && c_final.getX() > c_initial.getX())
+			{
+				for(i=c_initial.getX()+1; i<c_final.getX(); ++i)
     			{
-    				for(i=c_initial.getY()-1; i>c_final.getY(); --i)
-        			{
-        				if(this.terrain [c_final.getX()] [i].retourneContenu() != null)
-        				{
-        					return true;
-        				}
-        			}
-    			}
-       			// Déplacement horizontale case finale à droite de la case initiale
-    			else if(c_initial.getY() == c_final.getY() && c_final.getX() > c_initial.getX())
+    				if(this.terrain [i] [c_initial.getY()].retourneContenu() != null)
+    				{
+    					return true;
+    				}
+    			}	
+			}
+   			// Déplacement horizontale case finale à gauche de la case initiale
+			else if(c_initial.getY() == c_final.getY() && c_final.getX() < c_initial.getX())
+			{
+				for(i=c_initial.getX()-1; i>c_final.getX(); --i)
     			{
-    				for(i=c_initial.getX()+1; i<c_final.getX(); ++i)
-        			{
-        				if(this.terrain [i] [c_initial.getY()].retourneContenu() != null)
-        				{
-        					return true;
-        				}
-        			}	
-    			}
-       			// Déplacement horizontale case finale à gauche de la case initiale
-    			else if(c_initial.getY() == c_final.getY() && c_final.getX() < c_initial.getX())
-    			{
-    				for(i=c_initial.getX()-1; i>c_final.getX(); --i)
-        			{
-        				if(this.terrain [i] [c_initial.getY()].retourneContenu() != null)
-        				{
-        					return true;
-        				}
-        			}	
-    			} 			
-    			return false;
-    		case "roi":
-    			return (c_final.retourneContenu() != null && c_final.retourneContenu().getColor() == c_initial.retourneContenu().getColor());
-    		case "reine":
-    			
-    			break;
-    		case "fou":
-    			
-    			break;
-    		case "cavalier":
-    			return false;
-    			
-    		default:
-    			return false;
-    	}
-    	return false;
+    				if(this.terrain [i] [c_initial.getY()].retourneContenu() != null)
+    				{
+    					return true;
+    				}
+    			}	
+			} 	
+			return false;
+	    }
+	    
+	    else if (pieceName == "roi") {
+	    	return (c_final.retourneContenu() != null && c_final.retourneContenu().getColor() == c_initial.retourneContenu().getColor());
+	    }
+	    
+	    else if (pieceName == "reine") {
+	    	
+	    }
+	    
+	    else if (pieceName == "fou") {
+	    	//Déplacement vers le haut (...) ^
+	    	if (c_final .getY() > c_initial.getY()) {
+	    		// (...) et vers la droite >
+	    		if (c_final.getX() > c_initial.getX()) {
+	    			
+	    		}
+	    		// (...) et vers la gauche <
+	    		else {
+	    			
+	    		}
+	    	}
+	    	// Déplacement vers le bas (...) v
+	    	else {
+	    		// (...) et vers la droite >
+	    		if (c_final.getX() > c_initial.getX()) {
+	    			
+	    		}
+	    		// (...) et vers la gauche <
+	    		else {
+	    			
+	    		}
+	    	}
+	    }
+	    else {
+	    	return false;
+	    }
     }
    	
    /**
@@ -204,7 +231,7 @@ public class Terrain
 			   					((int) coup. charAt(1)) - '0' );
 	   
 	   Case arrive  = new Case ( ((int) coup .charAt(2)) - 'a', 
-					((int) coup. charAt(3)) - '0' );
+								 ((int) coup. charAt(3)) - '0' );
 	   
 	   this .deplaceunepiece(depart, arrive);				
    }
