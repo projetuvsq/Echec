@@ -177,34 +177,62 @@ public class Terrain
 	    }
 	    
 	    else if (pieceName == "reine") {
-	    	
+	    	return false;
 	    }
 	    
 	    else if (pieceName == "fou") {
+	    	if (c_final.retourneContenu().getColor() == c_initial.retourneContenu().getColor()) {
+	    		return true;
+	    	}
 	    	//Déplacement vers le haut (...) ^
 	    	if (c_final .getY() > c_initial.getY()) {
 	    		// (...) et vers la droite >
 	    		if (c_final.getX() > c_initial.getX()) {
-	    			
+	    			for (i = 1; i < (c_final.getX() - c_initial.getX()); ++i) {
+	    				if ( !(this .terrain [c_initial.getX()+i][c_final.getY()+i] .estVide()) ) {
+	    					return true;
+	    				}
+	    			}
 	    		}
 	    		// (...) et vers la gauche <
 	    		else {
-	    			
+	    			for (i = 1; i > (c_initial.getX() - c_final.getX()); ++i) {
+	    				if ( !(this .terrain [c_initial.getX()-i][c_final.getY()+i] .estVide()) ) {
+	    					return true;
+	    				}
+	    			}
 	    		}
 	    	}
 	    	// Déplacement vers le bas (...) v
 	    	else {
 	    		// (...) et vers la droite >
-	    		if (c_final.getX() > c_initial.getX()) {
-	    			
+	    		if (c_final.getX() > c_initial.getX()) 
+	    		{
+	    			for (i = 1; i > (c_final.getX() - c_initial.getX()); ++i) 
+	    			{
+	    				if ( !(this .terrain [c_initial.getX()+i][c_final.getY()-i] .estVide()) ) 
+	    				{
+	    					return true;
+	    				}
+	    			}
 	    		}
 	    		// (...) et vers la gauche <
-	    		else {
-	    			
+	    		else 
+	    		{
+	    			for (i = 1; i > (c_final.getX() - c_initial.getX()); ++i) 
+	    			{
+	    				if ( !(this .terrain [c_initial.getX()-i][c_final.getY()-i] .estVide()) ) 
+	    				{
+	    					return true;
+	    				}
+	    			}
 	    		}
 	    	}
+	    	return false;
 	    }
-	    else {
+	    
+	    else 
+	    {
 	    	return false;
 	    }
     }
