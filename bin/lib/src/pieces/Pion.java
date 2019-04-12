@@ -30,7 +30,7 @@ public class Pion extends Piece {
 			{
 				return true;
 			} // mange un pion
-			else if( (c_final.getX() == c_initial.getX()+1 || c_final.getX() == c_initial.getX()-1) 
+			else if(c_final .retourneContenu() !=null && (c_final.getX() == c_initial.getX()+1 || c_final.getX() == c_initial.getX()-1) 
 					&& c_final.getY() == c_initial.getY()+1 && (c_final.retourneContenu().getColor() != this.couleur && !(c_final.estVide() ) ) )
 			{
 				return true;

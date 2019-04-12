@@ -255,12 +255,23 @@ public class Terrain
     */
    
    public void mouvement (String coup) {
-	   Case depart = new Case ( ((int) coup .charAt(0)) - 'a', 
-			   					((int) coup. charAt(1)) - '0' );
+	   int xi = ((int) coup .charAt(0)) - 'a';
+	   int yi = ((int) coup .charAt(1)) - '1';
 	   
-	   Case arrive  = new Case ( ((int) coup .charAt(2)) - 'a', 
-								 ((int) coup. charAt(3)) - '0' );
+	   int xf = ((int) coup .charAt(2)) - 'a';
+	   int yf = ((int) coup .charAt(3)) - '1' ;
 	   
-	   this .deplaceunepiece(depart, arrive);				
+	   if (this .terrain [xi][yi] .retourneContenu() == null) {
+		   System.out.println("Aucune pièce à deplacer");
+	   }
+	   else if (this .terrain [xi][yi] .retourneContenu() .deplacement(terrain [xi][yi], terrain [xf][yf])
+			   	 && !(this .existeObstacle(terrain [xi][yi], terrain [xf][yf]))) 
+	   {
+		   this .deplaceunepiece(terrain [xi][yi], terrain [xf][yf]);
+	   }
+	   else {
+		   System.out.println("Déplacement impossible");
+	   }
+			
    }
 }
