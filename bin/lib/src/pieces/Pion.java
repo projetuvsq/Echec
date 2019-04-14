@@ -25,13 +25,22 @@ public class Pion extends Piece {
 	{
 		if (this.couleur == Color.white) {
 			// deplacement normal
-			if( (c_final.getX() == c_initial.getX() && ( c_final.getY() == c_initial.getY()+1 
-					|| (c_final.getY() == c_initial.getY()+2 && this.initial) ) ) )
+			if(c_final.getX() == c_initial.getX())
 			{
-				return true;
-			} // mange un pion
-			else if(c_final .retourneContenu() !=null && (c_final.getX() == c_initial.getX()+1 || c_final.getX() == c_initial.getX()-1) 
-					&& c_final.getY() == c_initial.getY()+1 && (c_final.retourneContenu().getColor() != this.couleur && !(c_final.estVide() ) ) )
+				if(c_final.getY() == c_initial.getY()+1) {
+					return true;
+				}
+				else if (c_final.getY() == c_initial.getY()+2 && this.initial) {
+					this.initial = false;
+					return true;
+				}
+				else return false;
+			} 
+			// mange un pion
+			else if(!(c_final.estVide())
+					&& (c_final.getX() == c_initial.getX()+1 || c_final.getX() == c_initial.getX()-1) 
+					&& c_final.getY() == c_initial.getY()+1 
+					&& (c_final.retourneContenu().getColor() != this.couleur) )
 			{
 				return true;
 			}
@@ -40,13 +49,21 @@ public class Pion extends Piece {
 		else
 		{
 			// deplacement normal
-			if( (c_final.getX() == c_initial.getX() && ( c_final.getY() == c_initial.getY()-1 
-				|| (c_final.getY() == c_initial.getY()-2 && this.initial) ) ) )
+			if(c_final.getX() == c_initial.getX())
 			{
-				return true;
+				if(c_final.getY() == c_initial.getY()-1) {
+					return true;
+				}
+				else if (c_final.getY() == c_initial.getY()-2 && this.initial) {
+					this.initial = false;
+					return true;
+				}
+				else return false;
 			} // mange un pion
-			else if( (c_final.getX() == c_initial.getX()+1 || c_final.getX() == c_initial.getX()-1) 
-					&& c_final.getY() == c_initial.getY()-1 && (c_final.retourneContenu().getColor() != this.couleur && !(c_final.estVide() ) ) )
+			else if(!(c_final.estVide())
+					&& (c_final.getX() == c_initial.getX()+1 || c_final.getX() == c_initial.getX()-1) 
+					&& c_final.getY() == c_initial.getY()-1 
+					&& (c_final.retourneContenu().getColor() != this.couleur) )
 			{
 				return true;
 			}

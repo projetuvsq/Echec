@@ -41,7 +41,7 @@ public abstract class Piece
     	boolean valide = this.estValide(c_initial, c_final);
     	
 		return ( (c_final.estVide() && valide)
-				|| ((c_final.retourneContenu().getColor()!= this.couleur) && valide) );
+				|| (valide && (c_final.retourneContenu().getColor()!=this.couleur)) );
 	}
      
     public abstract boolean estValide(Case c_initial, Case c_final);

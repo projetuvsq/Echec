@@ -15,18 +15,12 @@ public class Joueur
         this.mode = mode;
     }
     
+    /**
+     * Retourne le mode du joueur    
+     * @return	mode du joueur
+     */
     public int getMode() 
     {
-    	if(this.mode == 1) System.out.println("Player");
-    	else System.out.println("IA");
     	return this.mode;
-    }
-
-    /**
-     * Un exemple de méthode - remplacez ce commentaire par le vôtre
-     *
-     * @param  y   le paramètre de la méthode
-     * @return     la somme de x et de y
-     */
-    
+    }    
 }
