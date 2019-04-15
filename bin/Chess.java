@@ -1,6 +1,8 @@
 import lib.src.echec.*;
-import lib.src.pieces.*;
-import java.awt.Color;
+
+import java.io.IOException;
+//import lib.src.pieces.*;
+//import java.awt.Color;
 import java.util.Scanner;
 
 /**
@@ -14,15 +16,32 @@ import java.util.Scanner;
 // Mainclass du projet
 public class Chess
 {
-
 	public static void main(String[] args) 
 	{
 		Scanner sr = new Scanner (System.in);
+		Joueur J1 = new Joueur(1, 1), J2;
 		Terrain plateau = new Terrain();
-		while (true) {
-			plateau.afficher();
-			System.out.println ("Entrer votre coup de la forme (a1a2): ");
-			plateau .mouvement(sr.nextLine());
+		System.out.println("Choisissez votre adversaire:\n1. Joueur\n2. IA");
+		int mode = sr.nextInt(), i=0;
+		
+		if (mode == 1 || mode == 2) {
+			J2 = new Joueur(mode, 2);
 		}
+		else {
+			System.out.println("Saisie invalide, mode IA choisit");
+			J2 = new Joueur(2, 2);
+		}
+		sr.nextLine();
+		while (i != 300) {
+			Joueur Player;
+			plateau.afficher();
+			if (i % 2 == 0) Player = J1;
+			else Player = J2;
+			
+			System.out.printf ("Joueur %d, entrer votre coup de la forme (a1a2):\n", Player.getID());
+			plateau .mouvement(sr.nextLine(), Player.getID());
+			i++;
+		}
+		sr.close();
 	}
 }

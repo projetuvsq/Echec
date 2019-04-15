@@ -177,6 +177,19 @@ public class Terrain
 	    }
 	    
 	    else if (pieceName == "reine") {
+	    	//deplacement vers la gauche
+	    	if (c_initial.getX() > c_final.getX()) {
+	    		// deplacement horizontale 
+	    		if (c_initial.getY() == c_final.getY()) 
+	    		{
+	    			for (i=c_initial.getX() - 1; i>c_final.getX(); --i) {
+	    				//test
+	    				if (this .terrain[c_initial.getX()][c_final.getY()].retourneContenu() != null) {
+	    					return true;
+	    				}
+	    			}
+	    		}
+	    	}
 	    	return false;
 	    }
 	    
@@ -250,27 +263,46 @@ public class Terrain
    }
    
    /**
+    * Prend en parametre une chaine de caractère repésentant le coup du joueur
+    * et effectue le mouvement adequat si possible
+    * @param coup		coup du joeur de la forme (a1a2)
+    * @param ID			id du joeur appelant au mouvement
+    * @return			le code de fin de la methode (0: pas de probleme) (-1, 1, 2: code d'erreurs)
     * 
-    * @param coup
     */
    
-   public void mouvement (String coup) {
+   public int mouvement (String coup, int ID) {
+	   if (coup.length() != 4) 
+	   {
+		   System.out.println("Coup invalide");
+		   return -1;
+	   }
 	   int xi = ((int) coup .charAt(0)) - 'a';
 	   int yi = ((int) coup .charAt(1)) - '1';
 	   
 	   int xf = ((int) coup .charAt(2)) - 'a';
 	   int yf = ((int) coup .charAt(3)) - '1' ;
 	   
+	   
 	   if (this .terrain [xi][yi] .retourneContenu() == null) {
-		   System.out.println("Aucune pièce à deplacer");
+		   System.out.println("Aucune pièce à deplacer\n\n");
+		   return 1;
+	   }
+	   else if (ID == 1 && this .terrain [xi][xf] .retourneContenu() .getColor() != Color.white) {
+		   return 2;
+	   }
+	   else if (ID == 2 && this .terrain [xi][xf] .retourneContenu() .getColor() != Color.black) {
+		   return 2;
 	   }
 	   else if (this .terrain [xi][yi] .retourneContenu() .deplacement(terrain [xi][yi], terrain [xf][yf])
 			   	 && !(this .existeObstacle(terrain [xi][yi], terrain [xf][yf]))) 
 	   {
 		   this .deplaceunepiece(terrain [xi][yi], terrain [xf][yf]);
+		   return 0;
 	   }
 	   else {
-		   System.out.println("Déplacement impossible");
+		   System.out.println("Déplacement impossible\n\n");
+		   return 1;
 	   }
 			
    }

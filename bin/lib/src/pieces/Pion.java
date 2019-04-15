@@ -28,6 +28,7 @@ public class Pion extends Piece {
 			if(c_final.getX() == c_initial.getX())
 			{
 				if(c_final.getY() == c_initial.getY()+1) {
+					this.initial = false;
 					return true;
 				}
 				else if (c_final.getY() == c_initial.getY()+2 && this.initial) {
@@ -52,6 +53,7 @@ public class Pion extends Piece {
 			if(c_final.getX() == c_initial.getX())
 			{
 				if(c_final.getY() == c_initial.getY()-1) {
+					this.initial = false;
 					return true;
 				}
 				else if (c_final.getY() == c_initial.getY()-2 && this.initial) {
