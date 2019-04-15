@@ -3,7 +3,7 @@ package lib.src.echec;
 public class Case
 {
     // contenu de la case
-    private Piece contenu;
+    private Piece contenu; 
     // abscisse
     private int x;
     // ordonné

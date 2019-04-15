@@ -22,7 +22,7 @@ public class Chess
 		Joueur J1 = new Joueur(1, 1), J2;
 		Terrain plateau = new Terrain();
 		System.out.println("Choisissez votre adversaire:\n1. Joueur\n2. IA");
-		int mode = sr.nextInt(), i=0;
+		int mode = sr.nextInt(), i=0, retour;
 		
 		if (mode == 1 || mode == 2) {
 			J2 = new Joueur(mode, 2);
@@ -32,6 +32,7 @@ public class Chess
 			J2 = new Joueur(2, 2);
 		}
 		sr.nextLine();
+		
 		while (i != 300) {
 			Joueur Player;
 			plateau.afficher();
@@ -39,7 +40,11 @@ public class Chess
 			else Player = J2;
 			
 			System.out.printf ("Joueur %d, entrer votre coup de la forme (a1a2):\n", Player.getID());
-			plateau .mouvement(sr.nextLine(), Player.getID());
+			retour = plateau .mouvement(sr.nextLine(), Player.getID());
+			if (retour == -1 || retour == 1 || retour == 2)	{
+				System.out.println("Réessayez");
+				continue;
+			}
 			i++;
 		}
 		sr.close();

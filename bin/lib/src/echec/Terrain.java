@@ -107,6 +107,11 @@ public class Terrain
 	    int i;
 	    String pieceName = c_initial.retourneContenu().getName();
 	    
+	    if (!(c_final.estVide()) && c_final.retourneContenu().getColor() == c_initial.retourneContenu().getColor()) 
+	    {
+    		return true;
+    	}
+	    
 	    if (pieceName == "cavalier") {
 	    	return false;
 	    }
@@ -134,7 +139,7 @@ public class Terrain
     				{
     					return true;
     				}
-    			}	
+    			}
 			}
    			// Déplacement verticale case finale en-dessous de la case initiale
    			else if(c_initial.getX() == c_final.getX() && c_final.getY() < c_initial.getY())
@@ -177,20 +182,83 @@ public class Terrain
 	    }
 	    
 	    else if (pieceName == "reine") {
-	    	//deplacement vers la gauche
-	    	if (c_initial.getX() > c_final.getX()) {
-	    		// deplacement horizontale 
+	    	// DEPLACEMENT VERS LA GAUCHE
+	    	if (c_initial.getX() > c_final.getX()) 
+	    	{
+	    		// DEPLACEMENT HORIZONTALE 
 	    		if (c_initial.getY() == c_final.getY()) 
 	    		{
-	    			for (i=c_initial.getX() - 1; i>c_final.getX(); --i) {
-	    				//test
-	    				if (this .terrain[c_initial.getX()][c_final.getY()].retourneContenu() != null) {
+	    			for (i=c_initial.getX() - 1; i>c_final.getX(); --i) 
+	    			{
+	    				if (this .terrain [i][c_final.getY()].retourneContenu() != null) 
+	    				{
 	    					return true;
 	    				}
 	    			}
 	    		}
+	    		// DEPLACEMENT DIAGONALE BASSE
+	    		else if(c_initial.getY() > c_final.getY()) 
+	    		{
+	    			for (i=1; i<(c_initial.getX()-c_final.getX()); i++)
+	    			{
+	    				if (this .terrain[c_initial.getX()-i][c_initial.getY()-i].retourneContenu() != null) 
+	    				{
+	    					return true;
+	    				}
+	    			}
+	    		}
+	    		// DEPLACEMENT DIAGONALE HAUTE
+	    		else if(c_initial.getY() < c_final.getY())
+	    		{
+	    			for (i=1; i<(c_initial.getX()-c_final.getX()); i++)
+	    			{
+	    				if (this .terrain[c_initial.getX()-i][c_initial.getY()+i].retourneContenu() != null) 
+	    				{
+	    					return true;
+	    				}
+	    			}
+	    		}
+	    		return false;
 	    	}
-	    	return false;
+	    	// DEPLACEMENT VERS LA DROITE
+	    	else if (c_initial.getX() < c_final.getX())
+	    	{
+	    		// DEPLACEMENT HORIZONTALE
+	    		if (c_initial.getY() == c_final.getY()) 
+	    		{
+	    			for (i=c_initial.getX() + 1; i<c_final.getX(); ++i) 
+	    			{
+	    				if (this .terrain [i][c_final.getY()].retourneContenu() != null) 
+	    				{
+	    					return true;
+	    				}
+	    			}
+	    		}
+	    		// DEPLACEMENT DIAGONALE BASSE
+	    		else if(c_initial.getY() > c_final.getY()) 
+	    		{
+	    			for (i=1; i<(c_final.getX()-c_initial.getX()); i++)
+	    			{
+	    				if (this .terrain[c_initial.getX()+i][c_initial.getY()-i].retourneContenu() != null) 
+	    				{
+	    					return true;
+	    				}
+	    			}
+	    		}
+	    		// DEPLACEMENT DIAGONALE HAUTE	
+	    		else if(c_initial.getY() < c_final.getY())
+	    		{
+	    			for (i=1; i<(c_final.getX()-c_initial.getX()); i++)
+	    			{
+	    				if (this .terrain[c_initial.getX()+i][c_initial.getY()+i].retourneContenu() != null) 
+	    				{
+	    					return true;
+	    				}
+	    			}
+	    		}
+	    		else return false;
+	    	}
+	    	else return false;
 	    }
 	    
 	    else if (pieceName == "fou") {
@@ -232,7 +300,7 @@ public class Terrain
 	    		// (...) et vers la gauche <
 	    		else 
 	    		{
-	    			for (i = 1; i > (c_final.getX() - c_initial.getX()); ++i) 
+	    			for (i = 1; i < (c_initial.getX() - c_final.getX()); ++i) 
 	    			{
 	    				if ( !(this .terrain [c_initial.getX()-i][c_final.getY()-i] .estVide()) ) 
 	    				{
@@ -242,12 +310,9 @@ public class Terrain
 	    		}
 	    	}
 	    	return false;
-	    }
+	    }	    
+	   	return false;
 	    
-	    else 
-	    {
-	    	return false;
-	    }
     }
    	
    /**
@@ -264,7 +329,7 @@ public class Terrain
    
    /**
     * Prend en parametre une chaine de caractère repésentant le coup du joueur
-    * et effectue le mouvement adequat si possible
+    * et effectue le mouvement adequat si possible retourne un code suite à l'action effectuée
     * @param coup		coup du joeur de la forme (a1a2)
     * @param ID			id du joeur appelant au mouvement
     * @return			le code de fin de la methode (0: pas de probleme) (-1, 1, 2: code d'erreurs)
@@ -288,10 +353,12 @@ public class Terrain
 		   System.out.println("Aucune pièce à deplacer\n\n");
 		   return 1;
 	   }
-	   else if (ID == 1 && this .terrain [xi][xf] .retourneContenu() .getColor() != Color.white) {
+	   else if (ID == 1 && this .terrain [xi][yi] .retourneContenu() .getColor() != Color.white) {
+		   System.out.println("Pièces de l'adversaire");
 		   return 2;
 	   }
-	   else if (ID == 2 && this .terrain [xi][xf] .retourneContenu() .getColor() != Color.black) {
+	   else if (ID == 2 && this .terrain [xi][yi] .retourneContenu() .getColor() != Color.black) {
+		   System.out.println("Pièces de l'adversaire");
 		   return 2;
 	   }
 	   else if (this .terrain [xi][yi] .retourneContenu() .deplacement(terrain [xi][yi], terrain [xf][yf])

@@ -4,7 +4,7 @@ package lib.src.echec;
 public class Joueur
 {
     // mode == 1 ? : Player || mode == 2 ? : IA
-    private int mode;
+    private int mode; 
     private int ID;
     /**
      * Constructeur d'objets de classe Joueur
