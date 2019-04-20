@@ -1,5 +1,3 @@
-CLASSPIECE=lib/class/pieces
-CLASSECHEC=lib/class/echec
 SCRPTPIECE=lib/src/pieces
 SCRPTECHEC=lib/src/echec
 JARNAME=JeuEchec.jar
@@ -13,14 +11,15 @@ compile:
 	javac $(SCRPTECHEC)/*.java
 	javac $(SCRPTPIECE)/*.java
 	javac Chess.java
-	mv $(SCRPTECHEC)/*.class $(CLASSECHEC)
-	mv $(SCRPTPIECE)/*.class $(CLASSPIECE)
+
+run:
+	java -jar $(JARNAME)
 
 jar:
-	jar cfm $(JARNAME) META-INF/MANIFEST.MF Chess.class $(CLASSECHEC)/*.class $(CLASSPIECE)/*.class
+	jar cfm $(JARNAME) META-INF/MANIFEST.MF Chess.class $(SCRPTECHEC)/*.class $(SCRPTPIECE)/*.class
 
 clean:
-	rm -f $(CLASSPIECE)/*.class $(CLASSECHEC)/*.class *.class
+	rm -f $(SCRPTPIECE)/*.class $(SCRPTECHEC)/*.class
 
 mrproper: clean
 	rm -f $(JARNAME)
