@@ -332,44 +332,76 @@ public class Terrain
     * et effectue le mouvement adequat si possible retourne un code suite à l'action effectuée
     * @param coup		coup du joeur de la forme (a1a2)
     * @param ID			id du joeur appelant au mouvement
-    * @return			le code de fin de la methode (0: pas de probleme) (-1, 1, 2: code d'erreurs)
+    * @return			le code de fin de la methode (0, 1 : pas de probleme, idem et mange une piece , idem undo) (-1, -2,-3: code d'erreurs)
     * 
     */
    
-   public int mouvement (String coup, int ID) {
-	   if (coup.length() != 4) 
+   public int mouvement (String coup, int ID, Pile pile) {
+	   if (coup.length() != 4 && ((coup.length() != 1) || (coup.length() == 1 && coup.charAt(0) != 'u'))) 
 	   {
 		   System.out.println("Coup invalide");
 		   return -1;
 	   }
-	   int xi = ((int) coup .charAt(0)) - 'a';
-	   int yi = ((int) coup .charAt(1)) - '1';
+	   int xi, yi, xf, yf;
+	 
+	   if (coup.charAt(0) == 'u') {
+		   Undo undo = pile .depile();
+		   if (undo == null) {
+			   System.out.println("Aucune action à annuler");
+			   return -2;
+		   }
+		   coup = undo.coup;
+		   
+		   xf = ((int) coup .charAt(0)) - 'a';
+		   yf = ((int) coup .charAt(1)) - '1';
+		   
+		   xi = ((int) coup .charAt(2)) - 'a';
+		   yi = ((int) coup .charAt(3)) - '1' ;
+		   
+		   this .deplaceunepiece(terrain [xi][yi], terrain [xf][yf]);
+		   if (undo.piece != null) {
+			   terrain [xi][yi] .changeContenu(undo.piece);
+		   }
+		   return 2;
+	   }
+
+	   xi = ((int) coup .charAt(0)) - 'a';
+	   yi = ((int) coup .charAt(1)) - '1';
+		   
+	   xf = ((int) coup .charAt(2)) - 'a';
+	   yf = ((int) coup .charAt(3)) - '1' ;
 	   
-	   int xf = ((int) coup .charAt(2)) - 'a';
-	   int yf = ((int) coup .charAt(3)) - '1' ;
 	   
 	   
 	   if (this .terrain [xi][yi] .retourneContenu() == null) {
 		   System.out.println("Aucune pièce à deplacer\n\n");
-		   return 1;
+		   return -2;
 	   }
 	   else if (ID == 1 && this .terrain [xi][yi] .retourneContenu() .getColor() != Color.white) {
 		   System.out.println("Pièces de l'adversaire");
-		   return 2;
+		   return -3;
 	   }
 	   else if (ID == 2 && this .terrain [xi][yi] .retourneContenu() .getColor() != Color.black) {
 		   System.out.println("Pièces de l'adversaire");
-		   return 2;
+		   return -3;
 	   }
 	   else if (this .terrain [xi][yi] .retourneContenu() .deplacement(terrain [xi][yi], terrain [xf][yf])
 			   	 && !(this .existeObstacle(terrain [xi][yi], terrain [xf][yf]))) 
 	   {
-		   this .deplaceunepiece(terrain [xi][yi], terrain [xf][yf]);
-		   return 0;
+		   if (terrain [xf][yf].retourneContenu() != null) {
+			   pile .addPile (coup, terrain [xf][yf].retourneContenu());
+			   this .deplaceunepiece(terrain [xi][yi], terrain [xf][yf]);
+			   return 1;
+		   }
+		   else {
+			   pile .addPile (coup);
+			   this .deplaceunepiece(terrain [xi][yi], terrain [xf][yf]);
+			   return 0;
+		   }
 	   }
 	   else {
 		   System.out.println("Déplacement impossible\n\n");
-		   return 1;
+		   return -2;
 	   }
 			
    }

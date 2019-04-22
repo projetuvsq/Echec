@@ -18,6 +18,7 @@ public class Chess
 {
 	public static void main(String[] args) 
 	{
+		String coup;
 		Scanner sr = new Scanner (System.in);
 		Joueur J1 = new Joueur(1, 1), J2;
 		Terrain plateau = new Terrain();
@@ -40,8 +41,9 @@ public class Chess
 			else Player = J2;
 			
 			System.out.printf ("Joueur %d, entrer votre coup de la forme (a1a2):\n", Player.getID());
-			retour = plateau .mouvement(sr.nextLine(), Player.getID());
-			if (retour == -1 || retour == 1 || retour == 2)	{
+			coup = sr.nextLine();
+			retour = plateau .mouvement(coup, Player.getID(), Player .getPile());
+			if (retour == -1 || retour == -2 || retour == -3)	{
 				System.out.println("Réessayez");
 				continue;
 			}
