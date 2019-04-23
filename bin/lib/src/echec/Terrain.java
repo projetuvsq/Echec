@@ -358,13 +358,21 @@ public class Terrain
 		   xi = ((int) coup .charAt(2)) - 'a';
 		   yi = ((int) coup .charAt(3)) - '1' ;
 		   
+		   if (ID == 1 && this .terrain [xi][yi] .retourneContenu() .getColor() != Color.white) {
+			   System.out.println("Action indisponible pour le moment");
+			   return -2;
+		   }
+		   else if (ID == 2 && this .terrain [xi][yi] .retourneContenu() .getColor() != Color.black) {
+			   System.out.println("Action indisponible pour le moment");
+			   return -2;
+		   }
+		   
 		   this .deplaceunepiece(terrain [xi][yi], terrain [xf][yf]);
 		   if (undo.piece != null) {
 			   terrain [xi][yi] .changeContenu(undo.piece);
 		   }
 		   return 2;
 	   }
-
 	   xi = ((int) coup .charAt(0)) - 'a';
 	   yi = ((int) coup .charAt(1)) - '1';
 		   
@@ -405,4 +413,263 @@ public class Terrain
 	   }
 			
    }
+
+   public Case getCaseKing (Color couleur) {
+	   int i,j;
+	   Piece piece;
+	   for (i=0; i<this.nb_case; ++i) {
+		   for (j=0; j<this.nb_case; ++j) {
+			   piece = this.terrain [i][j].retourneContenu();
+			   if (piece != null && piece.getName() == "roi" && piece.getColor() == couleur) {
+				   return this .terrain [i][j];
+			   }
+		   }
+	   }
+	   return null;
+	   
+   }
+   
+   /**
+    * Detecte une situation d'echec
+    * @param c_roi		case où se trouve le roi 
+    * @return		boolean
+    */
+   public boolean echecRoi (Case c_roi, Color couleur) {
+	   int changement = 0;
+	   if (c_roi.retourneContenu() == null) {
+		   	c_roi .changeContenu(new Roi (couleur));
+		   	changement = 1;
+	   }
+	   int i, j;
+	   boolean test = false;
+	   Piece piece;
+	   for (i=0; i<this.nb_case; ++i) {
+		   if (test) break;
+		   for (j=0; j<this.nb_case; ++j) {
+			   piece = this.terrain[i][j].retourneContenu();
+			   if (piece != null && piece .getColor() != c_roi .retourneContenu().getColor()) {
+				   test = (piece.deplacement(this.terrain[i][j], c_roi) && !(this.existeObstacle(this.terrain[i][j], c_roi)));
+			   }
+			   if (test) break;
+		   }
+	   }
+	   if (changement == 1) c_roi.changeContenu(null);
+	   return test;
+   }
+   
+   /**
+    * Detecte une situation d'echec et mat
+    * @param c_roi 
+    * @return boolean
+    */
+   public boolean echecEtMat(Case c_roi, Color couleur) {
+	   //int i, j;
+	   int xr, yr;
+	   
+	   xr = c_roi.getX();
+	   yr = c_roi.getY();
+	   
+	   boolean test = false;
+	   test = echecRoi (c_roi, couleur);
+	   if (test == false) return false;
+	   
+	   // a droite en x
+	   if (xr == this.nb_case -1) {
+		   //en haut en y
+		   if (yr == this.nb_case -1) { 
+			   if (this.terrain [xr-1][yr]. retourneContenu() == null)
+			   {
+				   test = test && echecRoi (this.terrain [xr -1][yr], couleur);
+			   }
+			   if (this.terrain [xr-1][yr-1]. retourneContenu() == null)
+			   {
+				   test = test && echecRoi (this.terrain [xr -1][yr-1], couleur);
+			   }
+			   if (this.terrain [xr][yr-1]. retourneContenu() == null)
+			   {
+				   test = test && echecRoi (this.terrain [xr][yr-1], couleur);
+			   }
+		   }
+		   // en bas en y
+		   else if (yr == 0) {
+			   if (this.terrain [xr-1][yr]. retourneContenu() == null)
+			   {
+				   test = test && echecRoi (this.terrain [xr -1][yr], couleur);
+			   }
+			   if (this.terrain [xr-1][yr+1]. retourneContenu() == null)
+			   {
+				   test = test && echecRoi (this.terrain [xr -1][yr+1], couleur);
+			   }
+			   if (this.terrain [xr][yr+1]. retourneContenu() == null)
+			   {
+				   test = test && echecRoi (this.terrain [xr][yr+1], couleur);
+			   }
+		   }
+		   // ailleurs en y
+		   else {
+			   if (this.terrain [xr-1][yr]. retourneContenu() == null)
+			   {
+				   test = test && echecRoi (this.terrain [xr -1][yr], couleur);
+			   }
+			   if (this.terrain [xr-1][yr+1]. retourneContenu() == null)
+			   {
+				   test = test && echecRoi (this.terrain [xr -1][yr+1], couleur);
+			   }
+			   if (this.terrain [xr][yr+1]. retourneContenu() == null)
+			   {
+				   test = test && echecRoi (this.terrain [xr][yr+1], couleur);
+			   }
+			   if (this.terrain [xr-1][yr-1]. retourneContenu() == null)
+			   {
+				   test = test && echecRoi (this.terrain [xr -1][yr-1], couleur);
+			   }
+			   if (this.terrain [xr][yr-1]. retourneContenu() == null)
+			   {
+				   test = test && echecRoi (this.terrain [xr][yr-1], couleur);
+			   }
+		   }
+	   }
+	   // a gauche en x
+	   else if (xr == 0) {
+		 //en haut en y
+		   if (yr == this.nb_case -1) { 
+			   if (this.terrain [xr+1][yr]. retourneContenu() == null)
+			   {
+				   test = test && echecRoi (this.terrain [xr +1][yr], couleur);
+			   }
+			   if (this.terrain [xr+1][yr-1]. retourneContenu() == null)
+			   {
+				   test = test && echecRoi (this.terrain [xr +1][yr-1], couleur);
+			   }
+			   if (this.terrain [xr][yr-1]. retourneContenu() == null)
+			   {
+				   test = test && echecRoi (this.terrain [xr][yr-1], couleur);
+			   }
+		   }
+		   // en bas en y
+		   else if (yr == 0) {
+			   if (this.terrain [xr+1][yr]. retourneContenu() == null)
+			   {
+				   test = test && echecRoi (this.terrain [xr +1][yr], couleur);
+			   }
+			   if (this.terrain [xr+1][yr+1]. retourneContenu() == null)
+			   {
+				   test = test && echecRoi (this.terrain [xr +1][yr+1], couleur);
+			   }
+			   if (this.terrain [xr][yr+1]. retourneContenu() == null)
+			   {
+				   test = test && echecRoi (this.terrain [xr][yr+1], couleur);
+			   }
+		   }
+		   // ailleurs en y
+		   else {
+			   if (this.terrain [xr][yr+1]. retourneContenu() == null)
+			   {
+				   test = test && echecRoi (this.terrain [xr][yr+1], couleur);
+			   }
+			   if (this.terrain [xr][yr-1]. retourneContenu() == null)
+			   {
+				   test = test && echecRoi (this.terrain [xr][yr-1], couleur);
+			   }
+			   if (this.terrain [xr+1][yr]. retourneContenu() == null)
+			   {
+				   test = test && echecRoi (this.terrain [xr +1][yr], couleur);
+			   }
+			   if (this.terrain [xr+1][yr-1]. retourneContenu() == null)
+			   {
+				   test = test && echecRoi (this.terrain [xr +1][yr-1], couleur);
+			   }
+			   if (this.terrain [xr+1][yr+1]. retourneContenu() == null)
+			   {
+				   test = test && echecRoi (this.terrain [xr+1][yr+1], couleur);
+			   }
+		   }
+	   }
+	  // ailleurs en x
+	   else {
+		 //en haut en y
+		   if (yr == this.nb_case -1) { 
+		
+			   if (this.terrain [xr-1][yr]. retourneContenu() == null)
+			   {
+				   test = test && echecRoi (this.terrain [xr -1][yr], couleur);
+			   }
+			   if (this.terrain [xr-1][yr-1]. retourneContenu() == null)
+			   {
+				   test = test && echecRoi (this.terrain [xr -1][yr-1], couleur);
+			   }
+			   if (this.terrain [xr][yr-1]. retourneContenu() == null)
+			   {
+				   test = test && echecRoi (this.terrain [xr][yr-1], couleur);
+			   }
+			   if (this.terrain [xr+1][yr]. retourneContenu() == null)
+			   {
+				   test = test && echecRoi (this.terrain [xr +1][yr], couleur);
+			   }
+			   if (this.terrain [xr+1][yr-1]. retourneContenu() == null)
+			   {
+				   test = test && echecRoi (this.terrain [xr +1][yr-1], couleur);
+			   }
+		   }
+		   // en bas en y
+		   else if (yr == 0) {
+			   if (this.terrain [xr+1][yr]. retourneContenu() == null)
+			   {
+				   test = test && echecRoi (this.terrain [xr +1][yr], couleur);
+			   }
+			   if (this.terrain [xr+1][yr+1]. retourneContenu() == null)
+			   {
+				   test = test && echecRoi (this.terrain [xr +1][yr+1], couleur);
+			   }
+			   if (this.terrain [xr][yr+1]. retourneContenu() == null)
+			   {
+				   test = test && echecRoi (this.terrain [xr][yr+1], couleur);
+			   }
+			   if (this.terrain [xr-1][yr]. retourneContenu() == null)
+			   {
+				   test = test && echecRoi (this.terrain [xr -1][yr], couleur);
+			   }
+			   if (this.terrain [xr-1][yr+1]. retourneContenu() == null)
+			   {
+				   test = test && echecRoi (this.terrain [xr -1][yr+1], couleur);
+			   }
+		   }
+		   // ailleurs en y
+		   else {
+			   if (this.terrain [xr-1][yr]. retourneContenu() == null)
+			   {
+				   test = test && echecRoi (this.terrain [xr -1][yr], couleur);
+			   }
+			   if (this.terrain [xr-1][yr+1]. retourneContenu() == null)
+			   {
+				   test = test && echecRoi (this.terrain [xr -1][yr+1], couleur);
+			   }
+			   if (this.terrain [xr][yr+1]. retourneContenu() == null)
+			   {
+				   test = test && echecRoi (this.terrain [xr][yr+1], couleur);
+			   }
+			   if (this.terrain [xr-1][yr-1]. retourneContenu() == null)
+			   {
+				   test = test && echecRoi (this.terrain [xr -1][yr-1], couleur);
+			   }
+			   if (this.terrain [xr][yr-1]. retourneContenu() == null)
+			   {
+				   test = test && echecRoi (this.terrain [xr][yr-1], couleur);
+			   }
+			   if (this.terrain [xr+1][yr]. retourneContenu() == null)
+			   {
+				   test = test && echecRoi (this.terrain [xr +1][yr], couleur);
+			   }
+			   if (this.terrain [xr+1][yr-1]. retourneContenu() == null)
+			   {
+				   test = test && echecRoi (this.terrain [xr +1][yr-1], couleur);
+			   }
+			   if (this.terrain [xr+1][yr+1]. retourneContenu() == null)
+			   {
+				   test = test && echecRoi (this.terrain [xr+1][yr+1], couleur);
+			   }
+		   }
+	   }
+	   return test;
+	}
 }
