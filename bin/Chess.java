@@ -16,6 +16,7 @@ import java.util.Scanner;
 // Mainclass du projet
 public class Chess
 {	
+	public static Pile pile = new Pile();
 	public static void main(String[] args) 
 	{
 		String coup;
@@ -56,8 +57,12 @@ public class Chess
 			
 			System.out.printf ("Joueur %d, entrer votre coup de la forme (a1a2):\n", Player.getID());
 			coup = sr.nextLine();
-			retour = plateau .mouvement(coup, Player.getID(), Player .getPile());
-			if (retour == -1 || retour == -2 || retour == -3)	{
+			retour = plateau .mouvement(coup, Player.getID(), pile);
+			if (retour == 2) {
+				--i;
+				continue;
+			}
+			else if (retour == -1 || retour == -2 || retour == -3)	{
 				System.out.println("Réessayez");
 				continue;
 			}

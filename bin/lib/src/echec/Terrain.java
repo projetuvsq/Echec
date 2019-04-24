@@ -66,7 +66,7 @@ public class Terrain
      * Affiche une interface graphique dans le shell 
      */
     public void afficher() {
-    	
+    	//System.out.println("\n\n\n\n\n\n\n\n\n\n");
     	for (int j=nb_case; j>0; --j) 
     	{
     		System.out.print(j);// afficher les chiffres a gauche 
@@ -332,7 +332,7 @@ public class Terrain
     * et effectue le mouvement adequat si possible retourne un code suite à l'action effectuée
     * @param coup		coup du joeur de la forme (a1a2)
     * @param ID			id du joeur appelant au mouvement
-    * @return			le code de fin de la methode (0, 1 : pas de probleme, idem et mange une piece , idem undo) (-1, -2,-3: code d'erreurs)
+    * @return			le code de fin de la methode (0, 1 : pas de probleme, idem et mange une piece ,2: idem undo) (-1, -2,-3: code d'erreurs)
     * 
     */
    
@@ -357,16 +357,7 @@ public class Terrain
 		   
 		   xi = ((int) coup .charAt(2)) - 'a';
 		   yi = ((int) coup .charAt(3)) - '1' ;
-		   
-		   if (ID == 1 && this .terrain [xi][yi] .retourneContenu() .getColor() != Color.white) {
-			   System.out.println("Action indisponible pour le moment");
-			   return -2;
-		   }
-		   else if (ID == 2 && this .terrain [xi][yi] .retourneContenu() .getColor() != Color.black) {
-			   System.out.println("Action indisponible pour le moment");
-			   return -2;
-		   }
-		   
+		   		   
 		   this .deplaceunepiece(terrain [xi][yi], terrain [xf][yf]);
 		   if (undo.piece != null) {
 			   terrain [xi][yi] .changeContenu(undo.piece);

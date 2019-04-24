@@ -6,7 +6,6 @@ public class Joueur
     // mode == 1 ? : Player || mode == 2 ? : IA
     private int mode; 
     private int ID;
-    private Pile pile;
     /**
      * Constructeur d'objets de classe Joueur
      */
@@ -15,12 +14,8 @@ public class Joueur
         // Joueur ou IA ?
         this.mode = mode;
         this.ID = ID;
-        this. pile = new Pile ();
     }
      
-    public Pile getPile() {
-    	return this.pile;
-    }
     /**
      * Retourne le mode du joueur    
      * @return	mode du joueur
