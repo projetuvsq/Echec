@@ -65,7 +65,73 @@ public class Terrain
     /**
      * Affiche une interface graphique dans le shell 
      */
-    public void afficher() {
+     public void afficher() {
+    	
+    	for (int j=nb_case; j>0; --j) 
+    	{
+    		System.out.printf("%d|",j);// afficher les chiffres a gauche 
+    		for (int i=0; i<nb_case; ++i)
+    		{
+    			if( this .terrain [i][j-1] .retourneContenu() == null) 
+    			{
+    				System.out.printf ("\t |");
+    			}
+    			else {
+    				if (terrain [i][j-1] .retourneContenu() .getColor() == Color.white) {
+    					//System.out.printf ("\u001B[33m|%10s:1\u001B[0m", this .terrain[i][j-1] .retourneContenu() .getName());
+    					if ( this .terrain[i][j-1] .retourneContenu() .getName() == "pion" ){ 
+							System.out.printf ("\t\u2659|");
+						}
+						if (this .terrain[i][j-1] .retourneContenu() .getName() == "roi"){
+							System.out.printf ("\t\u2654|");
+						}
+						if (this .terrain[i][j-1] .retourneContenu() .getName() == "reine"){
+							System.out.printf ("\t\u2655|");
+						}
+						if (this .terrain[i][j-1] .retourneContenu() .getName() == "fou"){
+							System.out.printf ("\t\u2657|");
+						}
+						if (this .terrain[i][j-1] .retourneContenu() .getName() == "tour"){
+							System.out.printf ("\t\u2656|");
+						}
+						if (this .terrain[i][j-1] .retourneContenu() .getName() == "cavalier"){
+							System.out.printf ("\t\u2658|");
+						}
+    				}
+    				else {
+    					//System.out.printf ("\u001B[34m|%10s:2\u001B[0m", this .terrain[i][j-1] .retourneContenu() .getName());
+    					if ( this .terrain[i][j-1] .retourneContenu() .getName() == "pion" ){ 
+							System.out.printf ("\t\u001B[31m\u2659\u001B[0m|");
+						}
+						if (this .terrain[i][j-1] .retourneContenu() .getName() == "roi"){
+							System.out.printf ("\t\u001B[31m\u2654\u001B[0m|");
+						}
+						if (this .terrain[i][j-1] .retourneContenu() .getName() == "reine"){
+							System.out.printf ("\t\u001B[31m\u2655\u001B[0m|");
+						}
+						if (this .terrain[i][j-1] .retourneContenu() .getName() == "fou"){
+							System.out.printf ("\t\u001B[31m\u2657\u001B[0m|");
+						}
+						if (this .terrain[i][j-1] .retourneContenu() .getName() == "tour"){
+							System.out.printf ("\t\u001B[31m\u2656\u001B[0m|");
+						}
+						if (this .terrain[i][j-1] .retourneContenu() .getName() == "cavalier"){
+							System.out.printf ("\t\u001B[31m\u2658\u001B[0m|");
+						}
+    				}
+    			}
+    		}
+    		System.out.println ("\n");
+    	}
+    	
+    	System.out.print("  ");
+    	for(int i=0;i<nb_case;i++ )
+    	{
+    		System.out.print("|\t"+(char)('a'+i)); // afficher les lettres en bas 
+    	}
+    	System.out.println("|\n");
+    }
+    /*public void afficher() {
     	//System.out.println("\n\n\n\n\n\n\n\n\n\n");
     	for (int j=nb_case; j>0; --j) 
     	{
@@ -94,7 +160,7 @@ public class Terrain
     		System.out.print("|     "+(char)('a'+i)+"      "); // afficher les lettres en bas 
     	}
     	System.out.println("|\n");
-    }
+    }*/
     
     /**
      * Fonction permettant de tester l'existence d'un obstacle sur le déplacement d'une pièce
